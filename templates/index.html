@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>صفحه اصلی</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .library {
+            margin-bottom: 40px;
+            padding: 15px;
+            border: 4px solid #ccc;
+            border-radius: 10px;
+            background-color: #fefefe;
+        }
+
+        .books {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            gap: 15px;
+        }
+
+        .book {
+            min-width: 250px;
+            border: 2px solid #999;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            flex-shrink: 0;
+        }
+
+        .book h4 {
+            margin: 0 0 5px 0;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .book p {
+            margin: 3px 0;
+            font-size: 14px;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .pagination a {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 0 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>کتابخانه تست برای سهیل 🎉</h1>
+
+    <form method="get" action="" style="margin-bottom: 30px; text-align: center;">
+        <input
+            type="text"
+            name="q"
+            placeholder="نام کتابخانه را جستجو کنید..."
+            value="{{ query }}"
+            style="padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; width: 250px; font-size: 14px;"
+        />
+        <button
+            type="submit"
+            style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;">
+            جستجو 🔍
+        </button>
+    </form>
+
+    {% if libraries %}
+        {% for library in libraries %}
+            <div class="library">
+                <h2>{{ library.name }} ({{ library.location }})</h2>
+                <p>تاریخ ایجاد: {{ library.date_of_create }}</p>
+
+                <h3>کتاب‌های مورد نیاز:</h3>
+
+                <div class="books">
+                    {% for item in library.required_items.all %}
+                        <div class="book">
+                            <h4>{{ item.name }}</h4>
+                            <p>دسته: {{ item.category }}</p>
+                            <p>تعداد لازم: {{ item.number_of_required }}</p>
+                            <p>موجود: {{ item.given_number }}</p>
+                            <p>مبلغ: {{ item.amount|intcomma }} ریال</p>
+                        </div>
+                    {% empty %}
+                        <p>هیچ کتابی ثبت نشده</p>
+                    {% endfor %}
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center; font-weight:bold;">هیچ کتاب یا کتابخانه‌ای یافت نشد</p>
+    {% endif %}
+
+    {% if libraries.has_other_pages %}
+        <div class="pagination">
+            {% if libraries.has_previous %}
+                <a href="?page={{ libraries.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                    قبلی
+                </a>
+            {% endif %}
+
+            <span>صفحه {{ libraries.number }} از {{ libraries.paginator.num_pages }}</span>
+
+            {% if libraries.has_next %}
+                <a href="?page={{ libraries.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                    بعدی
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</body>
+</html>
