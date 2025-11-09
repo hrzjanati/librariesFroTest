@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load humanize %}
+{% load jformat %}
+
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ library.name }}</title>
+</head>
+<body>
+    <h1>جزئیات کتابخانه: {{ library.name }}</h1>
+    <ul>
+        {% for item in library.required_items.all %}
+            <li>{{ item.name }}</li>
+        {% empty %}
+            <li>هیچ آیتمی موجود نیست.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'home' %}">بازگشت به صفحه اصلی</a>
+</body>
+</html>

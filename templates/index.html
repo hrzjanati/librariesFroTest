@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load humanize %}
+{% load jformat %}
+
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -93,9 +95,13 @@
     {% if libraries %}
         {% for library in libraries %}
             <div class="library">
-                <h2>{{ library.name }} ({{ library.location }})</h2>
-                <p>تاریخ ایجاد: {{ library.date_of_create }}</p>
 
+                <h2>
+                    <a href="{% url 'library_detail' library.id %}">
+                            {{ library.name }} ({{ library.location }})
+                    </a>
+                </h2>
+                <p>تاریخ ایجاد: {{ library.date_of_create|jformat:"%Y/%m/%d" }}</p>
                 <h3>کتاب‌های مورد نیاز:</h3>
 
                 <div class="books">
