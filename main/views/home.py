@@ -1,11 +1,7 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.db.models import Q
-from .models import Library
+from ..models import Library
 
 def home(request):
     query = request.GET.get('q', '').strip()  # رشته خالی به جای None

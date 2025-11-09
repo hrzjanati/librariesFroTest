@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/core/__init__.py;/Users/behsazan/Desktop/Python/core/asgi.py;/Users/behsazan/Desktop/Python/core/settings.py;/Users/behsazan/Desktop/Python/core/urls.py;/Users/behsazan/Desktop/Python/core/wsgi.py;/Users/behsazan/Desktop/Python/main/migrations/0001_initial.py;/Users/behsazan/Desktop/Python/main/migrations/0002_requireditem_name.py;/Users/behsazan/Desktop/Python/main/migrations/__init__.py;/Users/behsazan/Desktop/Python/main/__init__.py;/Users/behsazan/Desktop/Python/main/admin.py;/Users/behsazan/Desktop/Python/main/apps.py;/Users/behsazan/Desktop/Python/main/models.py;/Users/behsazan/Desktop/Python/main/tests.py;/Users/behsazan/Desktop/Python/main/views.py;/Users/behsazan/Desktop/Python/templates/index.html;/Users/behsazan/Desktop/Python/manage.py" />
+  </component>
+</project>
