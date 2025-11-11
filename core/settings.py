@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'main',
     'django_jalali',
+    'smart_selects',
 ]
 
 # Middleware
@@ -95,6 +96,6 @@ USE_TZ = True
 
 # فایل‌های static
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = [BASE_DIR / "static"]  # اگر فولدر static کنار manage.py هست
 # کلید پیش‌فرض primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
