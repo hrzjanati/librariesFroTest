@@ -1,0 +1,85 @@
+{% load humanize %}
+{% load jformat %}
+
+{% block title %}صفحه اصلی{% endblock %}
+
+{% block content %}
+
+<h1 class="text-2xl font-bold text-center mb-6">کتابخانه تست برای سهیل 🎉</h1>
+
+<!-- فرم جستجو -->
+<form method="get" action="" class="flex justify-center mb-8">
+    <input
+        type="text"
+        name="q"
+        placeholder="نام کتابخانه را جستجو کنید..."
+        value="{{ query }}"
+        class="p-2 rounded-lg border border-gray-300 w-60 sm:w-72 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <button
+        type="submit"
+        class="mr-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+        جستجو 🔍
+    </button>
+</form>
+
+{% if libraries %}
+    {% for library in libraries %}
+        <div class="mb-10 p-4 border-2 border-gray-300 rounded-lg bg-white shadow-sm">
+
+            <h2 class="text-xl font-semibold mb-1">
+                <a href="{% url 'library_detail' library.id %}" class="hover:underline text-blue-700">
+                    {{ library.name }} ({{ library.location }})
+                </a>
+            </h2>
+            <p class="text-sm text-gray-500 mb-3">تاریخ ایجاد: {{ library.date_of_year|jformat:"%Y/%m/%d" }}</p>
+            <h3 class="font-semibold mb-2">کتاب‌های مورد نیاز:</h3>
+
+            <!-- کارت‌های کتاب با اسکرول افقی و کارت واکنش‌گرا -->
+            <div class="flex overflow-x-auto gap-2 pb-2 -mx-2 px-2 smooth-scroll">
+                {% for item in library.required_items.all %}
+                    <div class="flex-shrink-0
+                                w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%]
+                                min-w-[250px]
+                                bg-gray-100 p-4 rounded-lg border border-gray-300 shadow-md">
+                        <h4 class="font-bold text-lg mb-2">
+                            {{ item.book.name|default:"نام کتاب نامشخص"}}
+                        </h4>
+                        <p class="text-sm">دسته: {{ item.book.category|default:"نامشخص" }}</p>
+                        <p class="text-sm">تعداد لازم: {{ item.number_of_required }}</p>
+                        <p class="text-sm">موجود: {{ item.given_number }}</p>
+                        <p class="text-sm font-semibold mt-2">مبلغ: {{ item.amount|intcomma }} ریال</p>
+                    </div>
+                {% empty %}
+                    <p>هیچ کتابی ثبت نشده</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="text-center font-bold text-gray-700">هیچ کتاب یا کتابخانه‌ای یافت نشد</p>
+{% endif %}
+
+<!-- صفحه‌بندی -->
+{% if libraries.has_other_pages %}
+    <div class="flex justify-center mt-6 space-x-2">
+        {% if libraries.has_previous %}
+            <a href="?page={{ libraries.previous_page_number }}{% if query %}&q={{ query }}{% endif %}"
+               class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                قبلی
+            </a>
+        {% endif %}
+
+        <span class="px-3 py-1 font-semibold">{{ libraries.number }} / {{ libraries.paginator.num_pages }}</span>
+
+        {% if libraries.has_next %}
+            <a href="?page={{ libraries.next_page_number }}{% if query %}&q={{ query }}{% endif %}"
+               class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                بعدی
+            </a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}

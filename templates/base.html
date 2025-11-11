@@ -50,23 +50,30 @@
         </button>
 
         <h2 class="text-lg font-bold mb-4">استان‌ها</h2>
-        <ul class="space-y-2">
-            {% for province in provinces %}
-            <li>
-                <a href="{% url 'library_list_by_province' province.id %}"
-                   class="block px-3 py-2 rounded hover:bg-blue-200 transition-colors">
-                   {{ province.name }}
-                </a>
-            </li>
-            {% empty %}
-            <li>استانی موجود نیست</li>
-            {% endfor %}
-        </ul>
+        <form id="provinceFilterForm">
+            <ul class="space-y-2">
+                {% for province in provinces %}
+                <li>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="province" value="{{ province.id }}"
+                               class="province-checkbox">
+                        <span>{{ province.name }}</span>
+                    </label>
+                </li>
+                {% empty %}
+                <li>استانی موجود نیست</li>
+                {% endfor %}
+            </ul>
+        </form>
     </aside>
 
     <!-- ستون محتوا -->
     <main class="flex-1 p-4 bg-white rounded shadow overflow-auto">
-        {% block content %}{% endblock %}
+        <div id="librariesContainer">
+            {% block content %}
+            {% include 'library/_libraries_list.html' %}
+            {% endblock %}
+        </div>
     </main>
 </div>
 
@@ -75,8 +82,9 @@
     © 2025 همه حقوق محفوظ است
 </footer>
 
-<!-- اسکریپت باز و بسته کردن sidebar موبایل -->
+<!-- اسکریپت باز و بسته کردن sidebar موبایل و فیلتر استان‌ها -->
 <script>
+    // Sidebar موبایل
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('sidebarToggle');
     const closeBtn = document.getElementById('sidebarClose');
@@ -95,6 +103,31 @@
     toggleBtn.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
     overlay.addEventListener('click', closeSidebar);
+
+    // فیلتر کتابخانه‌ها با AJAX
+    const checkboxes = document.querySelectorAll('.province-checkbox');
+    const librariesContainer = document.getElementById('librariesContainer');
+
+    function fetchLibraries() {
+        const selected = Array.from(checkboxes)
+                              .filter(cb => cb.checked)
+                              .map(cb => cb.value);
+
+        const params = new URLSearchParams();
+        if (selected.length > 0) {
+            params.append('provinces', selected.join(','));
+        }
+
+        fetch(`/libraries/?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(response => response.text())
+            .then(html => {
+                librariesContainer.innerHTML = html;
+            });
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', fetchLibraries));
 </script>
 
 </body>
