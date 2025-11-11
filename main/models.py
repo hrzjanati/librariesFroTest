@@ -31,7 +31,7 @@ class Library(models.Model):
             null=True
         )
         street_detail = models.CharField(max_length=255)  # خیابان، میدان و جزئیات
-        date_of_create = models.DateField()
+        date_of_year = models.DateField()
 
         def __str__(self):
             return self.name

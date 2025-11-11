@@ -33,7 +33,7 @@
                     {{ library.name }} ({{ library.location }})
                 </a>
             </h2>
-            <p class="text-sm text-gray-500 mb-3">تاریخ ایجاد: {{ library.date_of_create|jformat:"%Y/%m/%d" }}</p>
+            <p class="text-sm text-gray-500 mb-3">تاریخ ایجاد: {{ library.date_of_year|jformat:"%Y/%m/%d" }}</p>
             <h3 class="font-semibold mb-2">کتاب‌های مورد نیاز:</h3>
 
             <!-- کارت‌های کتاب با اسکرول افقی و کارت واکنش‌گرا -->
@@ -43,8 +43,10 @@
                                 w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%]
                                 min-w-[250px]
                                 bg-gray-100 p-4 rounded-lg border border-gray-300 shadow-md">
-                        <h4 class="font-bold text-lg mb-2">{{ item.name }}</h4>
-                        <p class="text-sm">دسته: {{ item.category }}</p>
+                        <h4 class="font-bold text-lg mb-2">
+                            {{ item.book.name|default:"نام کتاب نامشخص"}}
+                        </h4>
+                        <p class="text-sm">دسته: {{ item.book.category|default:"نامشخص" }}</p>
                         <p class="text-sm">تعداد لازم: {{ item.number_of_required }}</p>
                         <p class="text-sm">موجود: {{ item.given_number }}</p>
                         <p class="text-sm font-semibold mt-2">مبلغ: {{ item.amount|intcomma }} ریال</p>
