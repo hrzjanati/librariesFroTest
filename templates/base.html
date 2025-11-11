@@ -17,33 +17,85 @@
             font-weight: 400;
             font-style: normal;
         }
-
-        body {
-            font-family: 'IRANSans', Arial, sans-serif;
-        }
-
-        /* Smooth scroll برای اسکرول افقی */
-        .smooth-scroll {
-            scroll-behavior: smooth;
-        }
+        body { font-family: 'IRANSans', Arial, sans-serif; }
+        .smooth-scroll { scroll-behavior: smooth; }
     </style>
 </head>
-<body class="bg-gray-50 p-4">
+<body class="bg-gray-50">
 
 <!-- هدر -->
-<header class="bg-blue-600 text-white p-4 mb-6">
-    <h1 class="text-xl font-bold text-center">لوگوی سایت یا هدر</h1>
+<header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">لوگوی سایت یا هدر</h1>
+    <!-- دکمه sidebar موبایل -->
+    <button id="sidebarToggle" class="lg:hidden bg-blue-500 px-3 py-1 rounded hover:bg-blue-400 transition">
+        استان‌ها
+    </button>
 </header>
 
-<!-- محتوای اصلی -->
-<main class="max-w-5xl mx-auto p-4">
-    {% block content %}{% endblock %}
-</main>
+<!-- overlay موبایل -->
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 lg:hidden"></div>
+
+<!-- محتوای اصلی با ستون ریسپانسیو -->
+<div class="flex flex-col lg:flex-row max-w-7xl mx-auto gap-6 relative">
+
+    <!-- ستون استان‌ها -->
+    <aside id="sidebar" class="w-64 p-4 bg-gray-100 rounded shadow flex-shrink-0
+                               fixed lg:static top-0 right-0 h-full lg:h-auto
+                               transform translate-x-full lg:translate-x-0
+                               transition-transform duration-300 z-50 overflow-y-auto max-h-screen">
+
+        <!-- دکمه بستن موبایل -->
+        <button id="sidebarClose" class="lg:hidden mb-4 text-gray-600 hover:text-gray-800 font-bold text-xl">
+            ×
+        </button>
+
+        <h2 class="text-lg font-bold mb-4">استان‌ها</h2>
+        <ul class="space-y-2">
+            {% for province in provinces %}
+            <li>
+                <a href="{% url 'library_list_by_province' province.id %}"
+                   class="block px-3 py-2 rounded hover:bg-blue-200 transition-colors">
+                   {{ province.name }}
+                </a>
+            </li>
+            {% empty %}
+            <li>استانی موجود نیست</li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- ستون محتوا -->
+    <main class="flex-1 p-4 bg-white rounded shadow overflow-auto">
+        {% block content %}{% endblock %}
+    </main>
+</div>
 
 <!-- فوتر -->
 <footer class="bg-gray-800 text-white p-4 mt-6 text-center">
     © 2025 همه حقوق محفوظ است
 </footer>
+
+<!-- اسکریپت باز و بسته کردن sidebar موبایل -->
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const closeBtn = document.getElementById('sidebarClose');
+    const overlay = document.getElementById('overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    toggleBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.db.models import Q
-from ..models import Library
+from ..models import Library , Province
 
 def home(request):
     query = request.GET.get('q', '').strip()  # رشته خالی به جای None
@@ -16,9 +16,11 @@ def home(request):
     paginator = Paginator(libraries.order_by('id'), 5)  # مرتب سازی برای جلوگیری از هشدار Pagination
     page_number = request.GET.get('page')
     libraries_page = paginator.get_page(page_number)
+    provinces = Province.objects.all()  # همه استان‌ها
 
     context = {
         'libraries': libraries_page,
-        'query': query
+        'query': query ,
+        'provinces': provinces
     }
     return render(request, 'index.html', context)
