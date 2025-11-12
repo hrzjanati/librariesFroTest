@@ -26,109 +26,17 @@
 <!-- هدر -->
 <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
     <h1 class="text-xl font-bold">لوگوی سایت یا هدر</h1>
-    <!-- دکمه sidebar موبایل -->
-    <button id="sidebarToggle" class="lg:hidden bg-blue-500 px-3 py-1 rounded hover:bg-blue-400 transition">
-        استان‌ها
-    </button>
 </header>
 
-<!-- overlay موبایل -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 lg:hidden"></div>
-
-<!-- محتوای اصلی با ستون ریسپانسیو -->
-<div class="flex flex-col lg:flex-row max-w-7xl mx-auto gap-6 relative">
-
-    <!-- ستون استان‌ها -->
-    <aside id="sidebar" class="w-64 p-4 bg-gray-100 rounded shadow flex-shrink-0
-                               fixed lg:static top-0 right-0 h-full lg:h-auto
-                               transform translate-x-full lg:translate-x-0
-                               transition-transform duration-300 z-50 overflow-y-auto max-h-screen">
-
-        <!-- دکمه بستن موبایل -->
-        <button id="sidebarClose" class="lg:hidden mb-4 text-gray-600 hover:text-gray-800 font-bold text-xl">
-            ×
-        </button>
-
-        <h2 class="text-lg font-bold mb-4">استان‌ها</h2>
-        <form id="provinceFilterForm">
-            <ul class="space-y-2">
-                {% for province in provinces %}
-                <li>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="province" value="{{ province.id }}"
-                               class="province-checkbox">
-                        <span>{{ province.name }}</span>
-                    </label>
-                </li>
-                {% empty %}
-                <li>استانی موجود نیست</li>
-                {% endfor %}
-            </ul>
-        </form>
-    </aside>
-
-    <!-- ستون محتوا -->
-    <main class="flex-1 p-4 bg-white rounded shadow overflow-auto">
-        <div id="librariesContainer">
-            {% block content %}
-            {% include 'library/_libraries_list.html' %}
-            {% endblock %}
-        </div>
-    </main>
-</div>
+<!-- محتوای اصلی -->
+<main class="max-w-7xl mx-auto p-4">
+    {% block content %}{% endblock %}
+</main>
 
 <!-- فوتر -->
 <footer class="bg-gray-800 text-white p-4 mt-6 text-center">
     © 2025 همه حقوق محفوظ است
 </footer>
-
-<!-- اسکریپت باز و بسته کردن sidebar موبایل و فیلتر استان‌ها -->
-<script>
-    // Sidebar موبایل
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const closeBtn = document.getElementById('sidebarClose');
-    const overlay = document.getElementById('overlay');
-
-    function openSidebar() {
-        sidebar.classList.remove('translate-x-full');
-        overlay.classList.remove('hidden');
-    }
-
-    function closeSidebar() {
-        sidebar.classList.add('translate-x-full');
-        overlay.classList.add('hidden');
-    }
-
-    toggleBtn.addEventListener('click', openSidebar);
-    closeBtn.addEventListener('click', closeSidebar);
-    overlay.addEventListener('click', closeSidebar);
-
-    // فیلتر کتابخانه‌ها با AJAX
-    const checkboxes = document.querySelectorAll('.province-checkbox');
-    const librariesContainer = document.getElementById('librariesContainer');
-
-    function fetchLibraries() {
-        const selected = Array.from(checkboxes)
-                              .filter(cb => cb.checked)
-                              .map(cb => cb.value);
-
-        const params = new URLSearchParams();
-        if (selected.length > 0) {
-            params.append('provinces', selected.join(','));
-        }
-
-        fetch(`/libraries/?${params.toString()}`, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-            .then(response => response.text())
-            .then(html => {
-                librariesContainer.innerHTML = html;
-            });
-    }
-
-    checkboxes.forEach(cb => cb.addEventListener('change', fetchLibraries));
-</script>
 
 </body>
 </html>
