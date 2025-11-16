@@ -4,39 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}صفحه من{% endblock %}</title>
+    <title>{% block title %}{{ TEXTS.home.app_title }}{% endblock %}</title>
 
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 
-    <!-- فونت ایران‌سنس -->
     <style>
         @font-face {
             font-family: 'IRANSans';
-            src: url("{% static 'fonts/IRANSans.woff2' %}") format('woff2');
-            font-weight: 400;
-            font-style: normal;
+            src: url("{% static 'fonts/IRANSansWeb_UltraLight.ttf' %}") format('truetype');
         }
         body { font-family: 'IRANSans', Arial, sans-serif; }
         .smooth-scroll { scroll-behavior: smooth; }
     </style>
+
+    {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-50">
 
-<!-- هدر -->
 <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold">لوگوی سایت یا هدر</h1>
+    <h1 class="text-xl font-bold">{{ TEXTS.home.app_title }}</h1>
+    {% block sidebar_btn %}{% endblock %}
 </header>
 
-<!-- محتوای اصلی -->
-<main class="max-w-7xl mx-auto p-4">
-    {% block content %}{% endblock %}
-</main>
+{% block body %}{% endblock %}
 
-<!-- فوتر -->
 <footer class="bg-gray-800 text-white p-4 mt-6 text-center">
-    © 2025 همه حقوق محفوظ است
+    {{ TEXTS.general.footer_title }}
 </footer>
 
+{% block scripts %}{% endblock %}
 </body>
 </html>

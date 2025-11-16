@@ -1,38 +1,20 @@
+{% extends "base.html" %}
 {% load static %}
 {% load humanize %}
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>کتابخانه تست برای سهیل 🎉</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+{% block sidebar_btn %}
+<button id="sidebarToggle" class="lg:hidden bg-blue-500 px-3 py-1 rounded hover:bg-blue-400 transition">
+    {{ TEXTS.home.province_title }}
+</button>
+{% endblock %}
 
-    <style>
-        @font-face {
-            font-family: 'IRANSans';
-            src: url("{% static 'fonts/IRANSans.woff2' %}") format('woff2');
-        }
-        body { font-family: 'IRANSans', Arial, sans-serif; }
-        .smooth-scroll { scroll-behavior: smooth; }
-    </style>
-</head>
-<body class="bg-gray-50">
-
-<header class="bg-blue-600 text-white p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold">کتابخانه تست برای سهیل 🎉</h1>
-    <button id="sidebarToggle" class="lg:hidden bg-blue-500 px-3 py-1 rounded hover:bg-blue-400 transition">
-        استان‌ها
-    </button>
-</header>
+{% block body %}
 
 <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 lg:hidden"></div>
 
 <div class="flex flex-col lg:flex-row max-w-7xl mx-auto gap-6 relative">
 
-    <!-- ستون استان‌ها (ثابت) -->
+    <!-- ستون استان‌ها -->
     <aside id="sidebar" class="w-64 p-4 bg-gray-100 rounded shadow flex-shrink-0
                                fixed lg:static top-0 right-0 h-full lg:h-auto
                                transform translate-x-full lg:translate-x-0
@@ -40,7 +22,7 @@
 
         <button id="sidebarClose" class="lg:hidden mb-4 text-gray-600 hover:text-gray-800 font-bold text-xl">×</button>
 
-        <h2 class="text-lg font-bold mb-4">استان‌ها</h2>
+        <h2 class="text-lg font-bold mb-4">{{ TEXTS.home.province_title }}</h2>
 
         <form id="provinceFilterForm"
               hx-get="/"
@@ -60,14 +42,14 @@
                     </label>
                 </li>
                 {% empty %}
-                <li>استانی موجود نیست</li>
+                <li>{{ TEXTS.home.province_not_exists }}</li>
                 {% endfor %}
             </ul>
             <input type="hidden" name="q" value="{{ query }}">
         </form>
     </aside>
 
-    <!-- ستون محتوا -->
+    <!-- محتوای اصلی -->
     <main class="flex-1 p-4 bg-white rounded shadow overflow-auto">
 
         <!-- فرم جستجو -->
@@ -76,17 +58,15 @@
               hx-target="#librariesContainer"
               hx-swap="innerHTML"
               class="flex justify-center mb-6 flex-wrap gap-2">
-            <input type="text" name="q" placeholder="نام کتابخانه را جستجو کنید..."
+            <input type="text" name="q" placeholder="{{ TEXTS.home.search_placeholder }}"
                    value="{{ query }}"
                    class="p-2 rounded-lg border border-gray-300 w-60 sm:w-72 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <button type="submit"
                     class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                جستجو 🔍
+                {{ TEXTS.home.search_button }}
             </button>
         </form>
 
-        <!-- محتوای کتابخانه‌ها (HTMX فقط اینجا رندر می‌کند) -->
-                     <!-- لیست کتابخانه‌ها -->
         <div id="librariesContainer">
             {% include "library_list.html" %}
         </div>
@@ -94,10 +74,9 @@
     </main>
 </div>
 
-<footer class="bg-gray-800 text-white p-4 mt-6 text-center">
-    © 2025 همه حقوق محفوظ است
-</footer>
+{% endblock %}
 
+{% block scripts %}
 <script>
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('sidebarToggle');
@@ -112,10 +91,8 @@
         sidebar.classList.add('translate-x-full');
         overlay.classList.add('hidden');
     }
-    toggleBtn.addEventListener('click', openSidebar);
-    closeBtn.addEventListener('click', closeSidebar);
-    overlay.addEventListener('click', closeSidebar);
+    toggleBtn?.addEventListener('click', openSidebar);
+    closeBtn?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
 </script>
-
-</body>
-</html>
+{% endblock %}
