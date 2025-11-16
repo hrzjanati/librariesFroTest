@@ -1,0 +1,77 @@
+{% load humanize %}
+
+{% if libraries %}
+    <div class="flex flex-col gap-6">
+    {% for library in libraries %}
+        <div class="p-4 border-2 border-gray-300 rounded-lg bg-white shadow-sm">
+            <h2 class="text-xl font-semibold mb-1">
+                <a href="{% url 'library_detail' library.id %}" class="hover:underline text-blue-700">
+                    {{ library.name }} ({{ library.province.name }})
+                </a>
+            </h2>
+
+            <p class="text-sm text-gray-500 mb-3">
+                تاریخ ایجاد: {{ library.date_of_year|date:"Y/m/d" }}
+            </p>
+
+            <h3 class="font-semibold mb-2">کتاب‌های مورد نیاز:</h3>
+
+            <div class="flex overflow-x-auto gap-2 pb-2 -mx-2 px-2 smooth-scroll">
+                {% for item in library.required_items.all %}
+                    <div class="flex-shrink-0
+                                w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%]
+                                min-w-[250px]
+                                bg-gray-100 p-4 rounded-lg border border-gray-300 shadow-md">
+
+                        <h4 class="font-bold text-lg mb-2">
+                            {{ item.book.name|default:"نام کتاب نامشخص" }}
+                        </h4>
+
+                        <p class="text-sm">دسته: {{ item.book.category|default:"نامشخص" }}</p>
+                        <p class="text-sm">تعداد لازم: {{ item.number_of_required }}</p>
+                        <p class="text-sm">موجود: {{ item.given_number }}</p>
+                        <p class="text-sm font-semibold mt-2">
+                            مبلغ: {{ item.amount|intcomma }} ریال
+                        </p>
+
+                    </div>
+                {% empty %}
+                    <p>هیچ کتابی ثبت نشده</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    {% endfor %}
+    </div>
+
+{% else %}
+    <p class="text-center font-bold text-gray-700">هیچ کتاب یا کتابخانه‌ای یافت نشد</p>
+{% endif %}
+
+{% if libraries.has_other_pages %}
+<div class="flex justify-center mt-6 flex-wrap gap-2">
+
+    {% if libraries.has_previous %}
+        <a hx-get="/?page={{ libraries.previous_page_number }}{% if query %}&q={{ query }}{% endif %}
+                {% if selected_provinces %}&provinces={{ selected_provinces|join:',' }}{% endif %}"
+           hx-target="#librariesContainer"
+           hx-swap="innerHTML"
+           class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            قبلی
+        </a>
+    {% endif %}
+
+    <span class="px-3 py-1 font-semibold">{{ libraries.number }} / {{ libraries.paginator.num_pages }}</span>
+
+    {% if libraries.has_next %}
+        <a hx-get="/?page={{ libraries.next_page_number }}{% if query %}&q={{ query }}{% endif %}
+                {% if selected_provinces %}&provinces={{ selected_provinces|join:',' }}{% endif %}"
+           hx-target="#librariesContainer"
+           hx-swap="innerHTML"
+           class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            بعدی
+        </a>
+    {% endif %}
+
+</div>
+{% endif %}

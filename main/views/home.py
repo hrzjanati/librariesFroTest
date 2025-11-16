@@ -4,9 +4,23 @@ from django.shortcuts import render
 from django.db.models import Q
 from ..models import Library, Province
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
+from django.db.models import Q
+from ..models import Library, Province
+
 def home(request):
     query = request.GET.get('q', '').strip()
-    province_ids = request.GET.get('provinces', '')  # رشته CSV از checkbox
+
+    # اول سعی کن همه مقادیر provinces رو به‌صورت لیست بگیریم
+    provinces_list = request.GET.getlist('provinces')  # -> ['3','7','8']
+    # همون‌طور که قبلاً ممکن بود CSV هم بفرستی: ?provinces=3,7,8
+    if not provinces_list:
+        provinces_csv = request.GET.get('provinces', '')
+        provinces_list = provinces_csv.split(',') if provinces_csv else []
+
+    # پاک‌سازی و نگه داشتن فقط اعدادی که عددی هستند
+    ids = [int(p) for p in provinces_list if str(p).isdigit()]
 
     libraries = Library.objects.all()
 
@@ -14,32 +28,29 @@ def home(request):
     if query:
         libraries = libraries.filter(
             Q(name__icontains=query) |
-            Q(required_items__name__icontains=query)
+            Q(required_items__book__name__icontains=query)  # اگر فیلد مرتبط با کتاب اینه
         ).distinct()
 
-    # فیلتر استان‌ها
-    if province_ids:
-        ids_list = [int(p) for p in province_ids.split(',') if p.isdigit()]
-        libraries = libraries.filter(province_id__in=ids_list)
+    # فیلتر استان‌ها (چندتایی)
+    if ids:
+        libraries = libraries.filter(province_id__in=ids)
 
     # pagination
     paginator = Paginator(libraries.order_by('id'), 5)
     page_number = request.GET.get('page')
     libraries_page = paginator.get_page(page_number)
 
-    # گرفتن همه استان‌ها
     provinces = Province.objects.all()
 
     context = {
         'libraries': libraries_page,
         'query': query,
-        'selected_provinces': province_ids.split(',') if province_ids else [],
+        'selected_provinces': [str(i) for i in ids],  # برای template به‌صورت رشته
         'provinces': provinces,
     }
 
-    # اگر AJAX بود، فقط لیست کتابخانه‌ها رو رندر کن
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return render(request, 'library/_libraries_list.html', context)
+    # اگر AJAX یا HTMX هست، فقط partial برگردون
+    if request.htmx:
+        return render(request, "library_list.html", context)
 
-    # در غیر این صورت کل صفحه
     return render(request, 'index.html', context)
