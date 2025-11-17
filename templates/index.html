@@ -3,26 +3,26 @@
 {% load humanize %}
 
 {% block sidebar_btn %}
-<button id="sidebarToggle" class="lg:hidden bg-blue-500 px-3 py-1 rounded hover:bg-blue-400 transition">
+<button id="sidebarToggle" class="md:hidden m-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition">
     {{ TEXTS.home.province_title }}
 </button>
 {% endblock %}
 
 {% block body %}
 
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 lg:hidden"></div>
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 md:hidden"></div>
 
-<div class="flex flex-col lg:flex-row max-w-7xl mx-auto gap-6 relative">
+<div class="flex flex-col md:flex-row max-w-7xl mx-auto gap-6 relative p-4">
 
     <!-- ستون استان‌ها -->
-    <aside id="sidebar" class="w-64 p-4 bg-gray-100 rounded shadow flex-shrink-0
-                               fixed lg:static top-0 right-0 h-full lg:h-auto
-                               transform translate-x-full lg:translate-x-0
+    <aside id="sidebar" class="w-64 p-4 bg-white rounded-lg shadow-lg flex-shrink-0
+                               fixed md:static top-0 right-0 h-full md:h-auto
+                               transform translate-x-full md:translate-x-0
                                transition-transform duration-300 z-50 overflow-y-auto max-h-screen">
 
-        <button id="sidebarClose" class="lg:hidden mb-4 text-gray-600 hover:text-gray-800 font-bold text-xl">×</button>
+        <button id="sidebarClose" class="md:hidden mb-4 text-gray-600 hover:text-gray-800 font-bold text-2xl">×</button>
 
-        <h2 class="text-lg font-bold mb-4">{{ TEXTS.home.province_title }}</h2>
+        <h2 class="text-xl font-bold mb-4 text-gray-800">{{ TEXTS.home.province_title }}</h2>
 
         <form id="provinceFilterForm"
               hx-get="/"
@@ -33,16 +33,16 @@
             <ul class="space-y-2">
                 {% for province in provinces %}
                 <li>
-                    <label class="flex items-center space-x-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" name="provinces"
                                value="{{ province.id }}"
                                {% if province.id in selected_provinces %}checked{% endif %}
-                               class="province-checkbox">
-                        <span>{{ province.name }}</span>
+                               class="province-checkbox h-4 w-4 accent-blue-600">
+                        <span class="text-gray-700">{{ province.name }}</span>
                     </label>
                 </li>
                 {% empty %}
-                <li>{{ TEXTS.home.province_not_exists }}</li>
+                <li class="text-gray-500">{{ TEXTS.home.province_not_exists }}</li>
                 {% endfor %}
             </ul>
             <input type="hidden" name="q" value="{{ query }}">
@@ -50,23 +50,45 @@
     </aside>
 
     <!-- محتوای اصلی -->
-    <main class="flex-1 p-4 bg-white rounded shadow overflow-auto">
+    <main class="flex-1 p-4 bg-gray-50 rounded-lg shadow-md">
 
         <!-- فرم جستجو -->
-        <form method="get" action="/"
-              hx-get="/"
-              hx-target="#librariesContainer"
-              hx-swap="innerHTML"
-              class="flex justify-center mb-6 flex-wrap gap-2">
-            <input type="text" name="q" placeholder="{{ TEXTS.home.search_placeholder }}"
-                   value="{{ query }}"
-                   class="p-2 rounded-lg border border-gray-300 w-60 sm:w-72 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button type="submit"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                {{ TEXTS.home.search_button }}
-            </button>
-        </form>
+               <form method="get" action="/"
+                  hx-get="/"
+                  hx-target="#librariesContainer"
+                  hx-swap="innerHTML"
+                  class="flex justify-center mb-6 flex-wrap gap-4">
 
+                <div class="relative w-60 sm:w-72" dir="rtl">
+                    <!-- Input -->
+                    <input type="text" name="q" id="search"
+                           value="{{ query }}"
+                           placeholder=" "
+                           class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300
+                                  text-gray-900 text-right focus:outline-none focus:ring-2 focus:ring-blue-500
+                                  focus:border-blue-500
+                                  transition-all">
+
+                    <!-- Floating label -->
+                    <label for="search"
+                           class="absolute right-4 top-2 text-gray-500 text-sm
+                                  transition-all duration-200
+                                  peer-placeholder-shown:top-5
+                                  peer-placeholder-shown:text-gray-400
+                                  peer-placeholder-shown:text-base
+                                  peer-focus:top-2
+                                  peer-focus:text-sm
+                                  peer-focus:text-blue-600">
+                        نام کتابخانه را جستجو کنید
+                    </label>
+                </div>
+
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition">
+                    جستجو
+                </button>
+            </form>
+        <!-- لیست کتابخانه‌ها -->
         <div id="librariesContainer">
             {% include "library_list.html" %}
         </div>
