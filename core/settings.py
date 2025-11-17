@@ -101,3 +101,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]  # اگر فولدر static کنار manage.py هست
 # کلید پیش‌فرض primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+
+USE_L10N = True  # فعال کردن لوکالیزیشن
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = ','  # جداکننده هزارگان (مثلاً ',' یا '.')
+DECIMAL_SEPARATOR = '.'   # جداکننده اعشار
+NUMBER_GROUPING = 3       # گروه بندی ارقام، معمولاً 3 رقم
