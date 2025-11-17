@@ -74,8 +74,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'behsazan',       # نام دیتابیس
-        'USER': 'behsazan',       # یوزر
-        'PASSWORD': '12345',      # پسورد
+        'USER': 'postgres',       # یوزر
+        'PASSWORD': '123456',      # پسورد
         'HOST': '127.0.0.1',      # localhost
         'PORT': '5432',
     }
