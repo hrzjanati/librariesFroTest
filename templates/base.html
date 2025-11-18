@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ TEXTS.home.app_title }}{% endblock %}</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- CSS Tailwind local -->
+    <link rel="stylesheet" href="{% static 'css/tailwind.min.css' %}">
 
+    <!-- HTMX -->
+   <script src="{% static 'js/htmx-1.9.10.min.js' %}"></script>
+
+    <!-- فونت ایران‌سنس -->
     <style>
         @font-face {
             font-family: 'IRANSans';
@@ -17,39 +21,24 @@
         body { font-family: 'IRANSans', Arial, sans-serif; }
         .smooth-scroll { scroll-behavior: smooth; }
     </style>
+
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-50">
 
 <header class="bg-blue-600 text-white p-6 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 shadow-md">
-    <!-- تصویر کتاب + عنوان اپلیکیشن -->
     <div class="flex items-center gap-4">
         <img src="{% static 'images/book_icon.png' %}" alt="کتاب" class="w-12 h-12 md:w-16 md:h-16 object-contain">
         <h1 class="text-2xl md:text-3xl font-bold">{{ TEXTS.home.app_title }}</h1>
     </div>
 
-    <!-- منوی دسکتاپ -->
     <nav class="hidden md:flex items-center gap-4">
-        <a href="{% url 'home' %}"
-           class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">
-            خانه
-        </a>
-        <a href="{% url 'contact_us' %}"
-           class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">
-            تماس با ما
-        </a>
-        <a href="{% url 'about_us' %}"
-           class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">
-            درباره ما
-        </a>
-
-         <a href="{% url 'faq' %}"
-           class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">
-            پرسشهاس متداول
-        </a>
+        <a href="{% url 'home' %}" class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">خانه</a>
+        <a href="{% url 'contact_us' %}" class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">تماس با ما</a>
+        <a href="{% url 'about_us' %}" class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">درباره ما</a>
+        <a href="{% url 'faq' %}" class="px-5 py-2 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition text-white font-medium">پرسش‌های متداول</a>
     </nav>
 
-    <!-- منوی موبایل -->
     <div class="md:hidden relative">
         <button id="mobileMenuBtn" class="px-3 py-2 bg-blue-500 rounded-md shadow-md">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
@@ -59,14 +48,10 @@
         </button>
 
         <div id="mobileMenu" class="absolute top-full right-0 mt-2 w-48 bg-blue-600 rounded-md shadow-lg hidden flex-col z-50 overflow-hidden">
-            <a href="{% url 'home' %}" class="block px-6 py-3 hover:bg-blue-500 transition font-medium">
-                خانه
-            </a>
-            <a href="{% url 'contact_us' %}" class="block px-6 py-3 hover:bg-blue-500 transition font-medium">
-                ارتباط با ما
-            </a>
+            <a href="{% url 'home' %}" class="block px-6 py-3 hover:bg-blue-500 transition font-medium">خانه</a>
+            <a href="{% url 'contact_us' %}" class="block px-6 py-3 hover:bg-blue-500 transition font-medium">ارتباط با ما</a>
             <a href="{% url 'about_us' %}" class="block px-4 py-2 hover:bg-blue-500 transition">درباره ما</a>
-            <a href="{% url 'faq' %}" class="block px-4 py-2 hover:bg-blue-500 transition"> سوالات متداول </a>
+            <a href="{% url 'faq' %}" class="block px-4 py-2 hover:bg-blue-500 transition">پرسش‌های متداول</a>
         </div>
     </div>
 
@@ -77,8 +62,6 @@
 
 <footer class="bg-gray-800 text-white p-8 mt-12">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-
-        <!-- لینک‌های مهم -->
         <div class="flex flex-col md:flex-row gap-4 md:gap-8 text-center md:text-right">
             <a href="{% url 'home' %}" class="hover:text-blue-400 transition">خانه</a>
             <a href="{% url 'contact_us' %}" class="hover:text-blue-400 transition">تماس با ما</a>
@@ -86,20 +69,11 @@
             <a href="{% url 'faq' %}" class="hover:text-blue-400 transition">پرسش‌های متداول</a>
         </div>
 
-        <!-- شبکه‌های اجتماعی -->
         <div class="flex gap-4 text-xl">
-            <a href="https://www.instagram.com/yourpage" target="_blank" class="hover:text-pink-500 transition">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/yourpage" target="_blank" class="hover:text-blue-400 transition">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://twitter.com/yourpage" target="_blank" class="hover:text-blue-300 transition">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://t.me/yourpage" target="_blank" class="hover:text-blue-500 transition">
-                <i class="fab fa-telegram"></i>
-            </a>
+            <a href="https://www.instagram.com/yourpage" target="_blank" class="hover:text-pink-500 transition"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/yourpage" target="_blank" class="hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+            <a href="https://twitter.com/yourpage" target="_blank" class="hover:text-blue-300 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://t.me/yourpage" target="_blank" class="hover:text-blue-500 transition"><i class="fab fa-telegram"></i></a>
         </div>
     </div>
 
@@ -108,7 +82,7 @@
     </div>
 </footer>
 
-<!-- اضافه کردن FontAwesome برای آیکون‌ها -->
+<!-- FontAwesome -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 {% block scripts %}
@@ -117,7 +91,7 @@
     const mobileMenu = document.getElementById('mobileMenu');
 
     mobileMenuBtn?.addEventListener('click', (e) => {
-        e.stopPropagation(); // جلوگیری از بسته شدن فوری
+        e.stopPropagation();
         mobileMenu.classList.toggle('hidden');
     });
 
