@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 
 BOT_TOKEN = "8178056523:AAG1roNPcFSacGrNhtpMXpiu90xAQhnXxhs"
-CHAT_ID = "82041680"
+CHAT_IDS = ["82041680", "12345678"]
 
 @csrf_exempt
 def send_message(request):
@@ -15,7 +15,8 @@ def send_message(request):
         text = f"📚 کتاب انتخاب شد:\n\nکتاب: {book_name}\nکتابخانه: {library_name}  \n تعداد موردنیاز:{number_of_required}"
 
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        requests.post(url, data={"chat_id": CHAT_ID, "text": text})
+        for chat_id in CHAT_IDS:
+            requests.post(url, data={"chat_id": chat_id, "text": text})
 
         # برگرداندن HTML برای toast
         return HttpResponse(

@@ -98,3 +98,20 @@
     {% endif %}
 </div>
 {% endif %}
+{% block scripts %}
+<script>
+// برای HTMX: بعد از swap محتوا
+document.body.addEventListener('htmx:afterSwap', function(evt) {
+    // چک می‌کنیم که target ما toast-container باشد
+    if(evt.detail.target.id === 'toast-container'){
+        // 2 ثانیه بعد toast را مخفی و فرم را reset
+        setTimeout(() => {
+            evt.detail.target.innerHTML = '';
+            // ریست تمام فرم‌هایی که hx-post دارند (تلگرام)
+            const forms = document.querySelectorAll('form[hx-post]');
+            forms.forEach(f => f.reset());
+        }, 2000);
+    }
+});
+</script>
+{% endblock %}

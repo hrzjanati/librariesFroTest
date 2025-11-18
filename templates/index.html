@@ -25,7 +25,7 @@
         <!-- عنوان فیلتر -->
         <button id="filterToggle" class="w-full flex justify-between items-center px-2 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-500 transition">
             <span>فیلترها</span>
-            <span id="filterArrow" class="text-xl">+</span>
+            <span id="filterArrow" class="text-xl">▼</span>
         </button>
 
         <!-- محتویات فیلتر -->
@@ -66,7 +66,7 @@
 
         filterToggle.addEventListener('click', () => {
             filterContent.classList.toggle('hidden');
-            filterArrow.textContent = filterContent.classList.contains('hidden') ? '+' : '−';
+            filterArrow.textContent = filterContent.classList.contains('hidden') ? '▼' : '▲';
         });
 </script>
 
