@@ -36,6 +36,10 @@ class Library(models.Model):
         def __str__(self):
             return self.name
 
+        class Meta:
+            verbose_name = "کتابخانه ها "
+            verbose_name_plural = "کتابخانه ها"
+
 
 class Book(models.Model):
     CATEGORY_CHOICES = [
@@ -71,6 +75,9 @@ class Book(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "کتاب "
+        verbose_name_plural = "کتاب"
 
 class RequiredItem(models.Model):
     library = models.ForeignKey(Library, on_delete=models.CASCADE, related_name='required_items')
@@ -87,4 +94,5 @@ class RequiredItem(models.Model):
 
     def __str__(self):
         return str(self.book)
+
 
