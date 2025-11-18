@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load humanize %}
-{% load jformat %}
 
 {% block title %}جزئیات کتابخانه: {{ library.name }}{% endblock %}
 
@@ -13,7 +12,7 @@
     </h1>
 
     <p class="text-sm text-gray-500 text-center mb-6">
-        تاریخ ایجاد: {{ library.date_of_year|jformat:"%Y/%m/%d" }}
+            تاریخ ایجاد: {{ library.date_of_year|date:"Y/m/d" }}
     </p>
 
     <!-- کارت‌های کتاب‌ها با اسکرول افقی -->

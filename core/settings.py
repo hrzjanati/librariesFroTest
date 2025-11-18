@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'main',
     'contactus',
-    'django_jalali',
+    'aboutus',
     'smart_selects',
     "django_htmx",
 ]

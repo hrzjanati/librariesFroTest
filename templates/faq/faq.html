@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}سوالات متداول{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto p-6 mt-6 bg-white rounded shadow">
+
+    <h1 class="text-2xl font-bold mb-6 text-blue-600">سوالات متداول</h1>
+
+    <div class="space-y-4">
+
+        <!-- سوال 1 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>اهدای کتاب چیست و چگونه انجام می‌شود؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                اهدای کتاب یک روش ساده برای کمک به کتابخانه‌ها و موسسات آموزشی است. شما می‌توانید کتاب‌های اضافی یا نو را انتخاب کرده و با ثبت در سیستم، به کتابخانه مورد نظر اهدا کنید.
+            </div>
+        </div>
+
+        <!-- سوال 2 (توضیح طولانی) -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>چگونه می‌توانم موجودی کتابخانه‌ها را مشاهده و کتاب اهدا کنم؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                شما می‌توانید وارد پنل اهدای کتاب شده و لیست کتاب‌های مورد نیاز هر کتابخانه را ببینید. با انتخاب کتاب و ثبت اطلاعات تماس، سیستم به کتابخانه اطلاع داده و هماهنگی لازم را انجام می‌دهد.
+                <br><br>
+                پس از اهدا، وضعیت کتاب به صورت خودکار بروزرسانی می‌شود تا کتابخانه و اهداکننده هر دو از موجودی مطلع باشند و هیچ کتابی گم نشود.
+            </div>
+        </div>
+
+        <!-- سوال 3 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>آیا اهدای کتاب نیاز به ثبت نام دارد؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                خیر، شما می‌توانید بدون ثبت نام، کتاب خود را انتخاب و ثبت اهدا انجام دهید. اما ثبت نام مزایای بیشتری مانند پیگیری اهداها و دریافت نوتیفیکیشن دارد.
+            </div>
+        </div>
+
+        <!-- سوال 4 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>آیا سیستم رایگان است؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                بله، استفاده از سیستم اهدای کتاب برای همه رایگان است. در آینده امکانات حرفه‌ای برای سازمان‌ها اضافه خواهد شد.
+            </div>
+        </div>
+
+        <!-- سوال 5 (توضیح طولانی) -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>چگونه می‌توانم چند کتاب را همزمان اهدا کنم و پیگیری کنم؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                شما می‌توانید چندین کتاب را انتخاب کرده و ثبت اهدا را انجام دهید. سیستم به صورت خودکار موجودی کتابخانه‌ها را بروزرسانی کرده و برای هر اهداکننده یک گزارش پیگیری ایجاد می‌کند.
+                <br><br>
+                این ویژگی باعث می‌شود همه اهداها شفاف و قابل پیگیری باشند و کتابخانه‌ها بتوانند برنامه‌ریزی بهتری برای استفاده از کتاب‌ها داشته باشند.
+            </div>
+        </div>
+
+        <!-- سوال 6 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>نحوه اطلاع‌رسانی کتابخانه‌ها چگونه است؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                اطلاع‌رسانی از طریق ایمیل، پیامک و نوتیفیکیشن به اهداکنندگان ارسال می‌شود تا نیازهای فوری و کتاب‌های مورد نیاز کتابخانه‌ها را بدانند.
+            </div>
+        </div>
+
+        <!-- سوال 7 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>آیا می‌توانم اهداهایم را ویرایش کنم؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                بله، می‌توانید قبل از تایید نهایی اهدا، اطلاعات کتاب و تعداد آن را ویرایش کنید.
+            </div>
+        </div>
+
+        <!-- سوال 8 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>چگونه می‌توانم اهداهایم را پیگیری کنم؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                پس از ثبت اهدا، یک پنل مخصوص اهداکنندگان وجود دارد که لیست کتاب‌ها، تاریخ و وضعیت دریافت کتاب‌ها توسط کتابخانه را نمایش می‌دهد.
+            </div>
+        </div>
+
+        <!-- سوال 9 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>آیا می‌توانم کتاب‌ها را برای چند کتابخانه اهدا کنم؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                بله، هنگام ثبت اهدا می‌توانید چند کتابخانه و کتاب را انتخاب کنید.
+            </div>
+        </div>
+
+        <!-- سوال 10 -->
+        <div class="border rounded-lg shadow-sm hover:shadow-md transition">
+            <button onclick="toggleFAQ(this)"
+                    class="w-full text-right px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-lg font-medium text-gray-800">
+                <span>آیا اطلاعات من محفوظ می‌ماند؟</span>
+                <span class="arrow text-xl">+</span>
+            </button>
+            <div class="content hidden px-6 pb-4 pt-2 text-gray-600">
+                تمامی اطلاعات اهداکنندگان در سیستم محفوظ و امن نگهداری می‌شود و بدون اجازه آنها منتشر نمی‌شود.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function toggleFAQ(btn) {
+    const content = btn.nextElementSibling;
+    const arrow = btn.querySelector(".arrow");
+
+    if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        arrow.textContent = "−";
+    } else {
+        content.classList.add("hidden");
+        arrow.textContent = "+";
+    }
+}
+</script>
+
+{% endblock %}
