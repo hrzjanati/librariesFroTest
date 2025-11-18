@@ -49,3 +49,17 @@ def home(request):
         return render(request, "library_list.html", context)
 
     return render(request, 'index.html', context)
+
+# main/apps.py
+from django.apps import AppConfig
+import threading
+class MainConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'main'
+
+    def ready(self):
+        from main.bot import start_bot  # فانکشنی که بات رو run می‌کنه
+
+        # فقط یکبار اجرا شود
+        thread = threading.Thread(target=start_bot, daemon=True)
+        thread.start()
