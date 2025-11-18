@@ -22,8 +22,40 @@
 </head>
 <body class="bg-gray-50">
 
-<header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+<header class="bg-blue-600 text-white p-4 flex justify-between items-center relative">
+    <!-- عنوان اپلیکیشن -->
     <h1 class="text-xl font-bold">{{ TEXTS.home.app_title }}</h1>
+
+    <!-- منوی دسکتاپ -->
+    <nav class="hidden md:flex items-center gap-2">
+        <a href="{% url 'home' %}"
+           class="px-3 py-1 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition">
+            خانه
+        </a>
+        <a href="{% url 'contact_us' %}" class="px-3 py-1 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition">
+            ارتباط با ما
+        </a>
+    </nav>
+
+    <!-- دکمه همبرگری موبایل -->
+    <div class="md:hidden relative">
+        <button id="mobileMenuBtn" class="px-3 py-2 bg-blue-500 rounded-md z-50 relative">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+        <!-- منوی موبایل -->
+        <div id="mobileMenu" class="absolute top-full right-0 mt-2 w-40 bg-blue-600 rounded-md shadow-lg hidden flex-col z-40">
+            <a href="{% url 'home' %}"
+               class="block px-4 py-2 hover:bg-blue-500 transition">خانه</a>
+            <a href="{% url 'contact_us' %}" class="px-3 py-1 bg-blue-500 hover:bg-blue-400 rounded-md shadow-md transition">
+                    ارتباط با ما
+            </a>
+        </div>
+    </div>
+
     {% block sidebar_btn %}{% endblock %}
 </header>
 
@@ -33,6 +65,23 @@
     {{ TEXTS.general.footer_title }}
 </footer>
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+<script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn?.addEventListener('click', (e) => {
+        e.stopPropagation(); // جلوگیری از بسته شدن فوری
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // بستن منو وقتی روی فضای بیرون کلیک می‌شود
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}
 </body>
 </html>

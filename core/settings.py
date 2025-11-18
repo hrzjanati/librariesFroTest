@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'main',
+    'contactus',
     'django_jalali',
     'smart_selects',
     "django_htmx",
