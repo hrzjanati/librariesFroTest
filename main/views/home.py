@@ -4,11 +4,6 @@ from django.shortcuts import render
 from django.db.models import Q
 from ..models import Library, Province
 
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from django.db.models import Q
-from ..models import Library, Province
-
 def home(request):
     query = request.GET.get('q', '').strip()
 
