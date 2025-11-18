@@ -46,7 +46,7 @@ def home(request):
 
     # اگر AJAX یا HTMX هست، فقط partial برگردون
     if request.htmx:
-        return render(request, "library_list.html", context)
+        return render(request, "library/library_list.html", context)
 
     return render(request, 'index.html', context)
 

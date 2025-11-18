@@ -3,4 +3,4 @@ from main.models import Library
 
 def library_detail(request, id):
     library = get_object_or_404(Library, id=id)
-    return render(request, 'library_detail.html', {'library': library})
+    return render(request, 'library/library_detail.html', {'library': library})

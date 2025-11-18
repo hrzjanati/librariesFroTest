@@ -42,4 +42,4 @@ def contact_us(request):
             </script>
         """)
 
-    return render(request, "contactus.html")
+    return render(request, "contactus/contactus.html")
