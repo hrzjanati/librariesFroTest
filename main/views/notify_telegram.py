@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 
 BOT_TOKEN = "8178056523:AAG1roNPcFSacGrNhtpMXpiu90xAQhnXxhs"
-CHAT_IDS = ["82041680", "47676554"]
+CHAT_IDS = ["82041680", "86437587"]
 
 @csrf_exempt
 def send_message(request):

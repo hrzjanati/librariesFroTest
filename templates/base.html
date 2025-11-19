@@ -9,21 +9,31 @@
     <!-- CSS Tailwind local -->
     <script src="{% static 'js/tailwindcss.min.js' %}"></script>
     <!-- HTMX -->
-   <script src="{static 'js/htmx-1.9.10.min.js' %}"></script>
+    <script src="{% static 'js/htmx-1.9.10.min.js' %}"></script>
 
-    <!-- فونت ایران‌سنس -->
+    <!-- >>> اضافه کردن این خط برای بارگذاری کامپوننت‌ها <<< -->
+    <script type="module" src="{% static 'js/material-bundle.js' %}"></script>
+
+    <!-- فونت ایران‌سنس و استایل‌های شما -->
     <style>
         @font-face {
             font-family: 'IRANSans';
             src: url("{% static 'fonts/IRANSansWeb_UltraLight.ttf' %}") format('truetype');
         }
-        body { font-family: 'IRANSans', Arial, sans-serif; }
-        .smooth-scroll { scroll-behavior: smooth; }
+        body {
+            font-family: 'IRANSans', Arial, sans-serif;
+            .smooth-scroll { scroll-behavior: smooth; }
+            --md-sys-typescale-body-large-font: 'IRANSans', Arial, sans-serif;
+            --md-sys-typescale-label-large-font: 'IRANSans', Arial, sans-serif;
+            --md-sys-color-primary: #1e40af;
+        }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-50">
+<!-- بقیه کدهای base.html در اینجا قرار دارند... -->
+
 
 <header class="bg-blue-600 text-white p-6 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 shadow-md">
     <div class="flex items-center gap-4">

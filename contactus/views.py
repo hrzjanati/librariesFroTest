@@ -1,45 +1,40 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
-from django.http import HttpResponse
 from .models import ContactMessage
+from .forms import ContactUsForm
 import requests
 
 BOT_TOKEN = "8178056523:AAG1roNPcFSacGrNhtpMXpiu90xAQhnXxhs"
-CHAT_ID = "82041680"
+CHAT_IDS = ["82041680", "86437587"]
 
 def contact_us(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        email = request.POST.get("email")
-        subject = request.POST.get("subject")
-        message = request.POST.get("message")
+        form = ContactUsForm(request.POST)
 
-        # ذخیره در دیتابیس
-        ContactMessage.objects.create(
-            name=name,
-            phone=phone,
-            email=email,
-            subject=subject,
-            message=message
-        )
+        if form.is_valid():
+            cd = form.cleaned_data
 
-        # ارسال همزمان به تلگرام
-        text = f"📩 پیام جدید از فرم ارتباط با ما:\n\nنام: {name}\nشماره: {phone}\nایمیل: {email}\nموضوع: {subject}\nپیام: {message}"
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        requests.post(url, data={"chat_id": CHAT_ID, "text": text})
+            # ذخیره در دیتابیس
+            ContactMessage.objects.create(
+                name=cd['name'],
+                phone=cd['phone'],
+                email=cd['email'],
+                subject=cd['subject'],
+                message=cd['message']
+            )
 
-        # HTML برای toast + پاک کردن فرم
-        return HttpResponse("""
-            <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-md">
-                پیام شما با موفقیت ارسال شد!
-            </div>
-            <script>
-                const form = document.currentScript.closest('form');
-                form.reset();
-            </script>
-        """)
+            # ارسال به تلگرام
+            text = f"📩 پیام جدید:\n\nنام: {cd['name']}\nشماره: {cd['phone']}\nایمیل: {cd['email']}\nموضوع: {cd['subject']}\nپیام: {cd['message']}"
+            url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+            for chat_id in CHAT_IDS:
+                requests.post(url, data={"chat_id": chat_id, "text": text})
 
-    return render(request, "contactus/contactus.html")
+            # پاسخ HTMX → فقط فرم با toast موفقیت
+            form = ContactUsForm()  # فرم خالی بعد از موفقیت
+            return render(request, "contactus/contactus_form.html", {"form": form, "success_message": "پیام شما با موفقیت ارسال شد!"})
+
+        # اگر فرم invalid است → فقط فرم با ارورها برگردانده شود
+        return render(request, "contactus/contactus_form.html", {"form": form})
+
+    # GET → صفحه اصلی
+    form = ContactUsForm()
+    return render(request, "contactus/contactus.html", {"form": form})

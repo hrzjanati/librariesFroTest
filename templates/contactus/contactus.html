@@ -1,114 +1,17 @@
 {% extends "base.html" %}
+
 {% load static %}
+
 
 {% block title %}ارتباط با ما{% endblock %}
 
 {% block body %}
 <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
-
     <h1 class="text-3xl font-bold mb-4 text-blue-600">تماس با ما</h1>
     <p class="text-gray-700 mb-6">
-        برای ارتباط با تیم پشتیبانی اهدانش، می‌توانید از طریق فرم زیر با ما در تماس باشید. همکاران ما در اسرع وقت به پیام شما پاسخ خواهند داد.
+        برای ارتباط با تیم پشتیبانی اهدانش، می‌توانید از طریق فرم زیر با ما در تماس باشید.
     </p>
 
-    <!-- جایگاه نمایش toast -->
-    <div id="toast-container"></div>
-
-    <!-- فرم تماس -->
-    <form
-        hx-post="{% url 'contact_us' %}"
-        hx-target="#toast-container"
-        hx-swap="innerHTML"
-        class="flex flex-col gap-4"
-    >
-        {% csrf_token %}
-
-        <!-- نام -->
-        <div class="relative w-full">
-            <input type="text" name="name" placeholder=" " class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-            <label class="absolute right-4 top-2 text-gray-500 text-sm transition-all duration-200 peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600">
-                نام و نام خانوادگی
-            </label>
-        </div>
-
-        <!-- شماره -->
-        <div class="relative w-full">
-            <input type="text" name="phone" placeholder=" " class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-            <label class="absolute right-4 top-2 text-gray-500 text-sm transition-all duration-200 peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600">
-                شماره همراه
-            </label>
-        </div>
-
-        <!-- ایمیل -->
-        <div class="relative w-full">
-            <input type="email" name="email" placeholder=" " class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-            <label class="absolute right-4 top-2 text-gray-500 text-sm transition-all duration-200 peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600">
-                ایمیل
-            </label>
-        </div>
-
-        <!-- موضوع پیام -->
-        <div class="relative w-full">
-            <input type="text" name="subject" placeholder=" " class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-            <label class="absolute right-4 top-2 text-gray-500 text-sm transition-all duration-200 peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600">
-                موضوع پیام
-            </label>
-        </div>
-
-        <!-- پیام -->
-        <div class="relative w-full">
-            <textarea name="message" placeholder=" " class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-y"></textarea>
-            <label class="absolute right-4 top-2 text-gray-500 text-sm transition-all duration-200 peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600">
-                پیام خود را وارد نمایید...
-            </label>
-        </div>
-
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            ارسال پیام
-        </button>
-    </form>
-
-    <hr class="my-6 border-gray-300">
-
-    <!-- اطلاعات تماس -->
-    <div class="space-y-4">
-        <h2 class="text-xl font-semibold text-blue-600">راه‌های ارتباطی</h2>
-
-        <div class="flex items-start gap-4">
-            <div class="text-gray-700 font-medium">تماس تلفنی:</div>
-            <div class="text-gray-600">
-                شنبه تا چهارشنبه - ۸ صبح تا ۴ عصر
-            </div>
-        </div>
-
-        <div class="flex items-start gap-4">
-            <div class="text-gray-700 font-medium">پست الکترونیکی:</div>
-            <div class="text-gray-600">
-                پاسخگویی در کمتر از ۲۴ ساعت
-            </div>
-        </div>
-
-        <div class="flex items-start gap-4">
-            <div class="text-gray-700 font-medium">پیامک:</div>
-            <div class="text-gray-600">
-                پاسخگویی در کمتر از ۱۲ ساعت
-            </div>
-        </div>
-    </div>
-
+    {% include 'contactus/contactus_form.html' %}
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.body.addEventListener('htmx:afterSwap', function(evt) {
-    if(evt.detail.target.id === 'toast-container'){
-        setTimeout(() => {
-            evt.detail.target.innerHTML = '';
-            const form = document.querySelector('form[hx-post]');
-            form.reset();
-        }, 2000);
-    }
-});
-</script>
 {% endblock %}

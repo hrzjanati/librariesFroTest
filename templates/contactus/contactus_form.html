@@ -1,0 +1,57 @@
+{% load static %}
+<form
+    hx-post="{% url 'contact_us' %}"
+    hx-post="{% url 'contact_us' %}"
+    hx-target="this"
+    hx-swap="outerHTML"
+    class="flex flex-col gap-4"
+>
+    {% csrf_token %}
+
+    <md-outlined-text-field name="name" label="نام و نام خانوادگی" value="{{ form.name.value|default:'' }}" maxlength="255"></md-outlined-text-field>
+    {% for error in form.name.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+    {% endfor %}
+
+    <md-outlined-text-field name="phone" label="شماره همراه" type="tel" value="{{ form.phone.value|default:'' }}" maxlength="11"></md-outlined-text-field>
+    {% for error in form.phone.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+    {% endfor %}
+
+    <md-outlined-text-field name="email" label="ایمیل" type="email" value="{{ form.email.value|default:'' }}"></md-outlined-text-field>
+    {% for error in form.email.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+    {% endfor %}
+
+    <md-outlined-text-field name="subject" label="موضوع پیام" value="{{ form.subject.value|default:'' }}"></md-outlined-text-field>
+    {% for error in form.subject.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+    {% endfor %}
+
+     <md-outlined-textarea
+        name="message"
+        label="پیام خود را وارد نمایید..."
+        value="{{ form.message.value|default:'' }}"
+    ></md-outlined-textarea>
+    {% for error in form.message.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+    {% endfor %}
+
+    <md-outlined-button type="submit">ارسال پیام</md-outlined-button>
+</form>
+
+{% if success_message %}
+<div id="success-box" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-md">
+    {{ success_message }}
+</div>
+<script>
+setTimeout(() => {
+    const box = document.getElementById("success-box");
+    if(box){
+        box.style.transition = "opacity 0.5s";
+        box.style.opacity = 0;
+        setTimeout(() => box.remove(), 500);
+    }
+}, 2000);
+</script>
+{% endif %}
