@@ -75,40 +75,26 @@
 
         <!-- فرم جستجو -->
                <form method="get" action="/"
-                  hx-get="/"
-                  hx-target="#librariesContainer"
-                  hx-swap="innerHTML"
-                  class="flex justify-center mb-6 flex-wrap gap-4">
+                      hx-get="/"
+                      hx-target="#librariesContainer"
+                      hx-swap="innerHTML"
+                      class="flex justify-center mb-6 flex-wrap gap-4">
 
-                <div class="relative w-60 sm:w-72" dir="rtl">
-                    <!-- Input -->
-                    <input type="text" name="q" id="search"
-                           value="{{ query }}"
-                           placeholder=" "
-                           class="peer block w-full px-4 pt-5 pb-2 border rounded-md border-gray-300
-                                  text-gray-900 text-right focus:outline-none focus:ring-2 focus:ring-blue-500
-                                  focus:border-blue-500
-                                  transition-all">
+                    <!-- search input -->
+                    <md-outlined-text-field
+                        name="q"
+                        label="نام کتابخانه را جستجو کنید"
+                        value="{{ query }}"
+                        dir="rtl"
+                        style="width: 500px;"
+                        class="sm:w-72">
+                    </md-outlined-text-field>
 
-                    <!-- Floating label -->
-                    <label for="search"
-                           class="absolute right-4 top-2 text-gray-500 text-sm
-                                  transition-all duration-200
-                                  peer-placeholder-shown:top-5
-                                  peer-placeholder-shown:text-gray-400
-                                  peer-placeholder-shown:text-base
-                                  peer-focus:top-2
-                                  peer-focus:text-sm
-                                  peer-focus:text-blue-600">
-                        نام کتابخانه را جستجو کنید
-                    </label>
-                </div>
-
-                <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition">
-                    جستجو
-                </button>
-            </form>
+                    <!-- submit button -->
+                    <md-filled-button type="submit">
+                        جستجو
+                    </md-filled-button>
+                </form>
         <!-- لیست کتابخانه‌ها -->
         <div id="librariesContainer">
             {% include "library/library_list.html" %}
