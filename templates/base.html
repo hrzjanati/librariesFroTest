@@ -15,19 +15,35 @@
     <script type="module" src="{% static 'js/material-bundle.js' %}"></script>
 
     <!-- فونت ایران‌سنس و استایل‌های شما -->
-    <style>
-        @font-face {
-            font-family: 'IRANSans';
-            src: url("{% static 'fonts/IRANSansWeb_UltraLight.ttf' %}") format('truetype');
-        }
-        body {
-            font-family: 'IRANSans', Arial, sans-serif;
-            .smooth-scroll { scroll-behavior: smooth; }
-            --md-sys-typescale-body-large-font: 'IRANSans', Arial, sans-serif;
-            --md-sys-typescale-label-large-font: 'IRANSans', Arial, sans-serif;
-            --md-sys-color-primary: #1e40af;
-        }
-    </style>
+            <style>
+                       @font-face {
+                        font-family: 'IRANSans';
+                        src: url("{% static 'fonts/IRANSansWeb_UltraLight.ttf' %}") format('truetype');
+                    }
+
+                    html, body {
+                        height: 100%;
+                    }
+
+                    body {
+                        font-family: 'IRANSans', Arial, sans-serif;
+                        display: flex;
+                        flex-direction: column;
+
+                        --md-sys-typescale-body-large-font: 'IRANSans', Arial, sans-serif;
+                        --md-sys-typescale-label-large-font: 'IRANSans', Arial, sans-serif;
+                        --md-sys-color-primary: #1e40af;
+                    }
+
+                    /* این را بیرون از body بگذار */
+                    .smooth-scroll {
+                        scroll-behavior: smooth;
+                    }
+
+                    footer {
+                        margin-top: auto;
+                    }
+            </style>
 
     {% block extra_head %}{% endblock %}
 </head>
@@ -69,7 +85,7 @@
 
 {% block body %}{% endblock %}
 
-<footer class="bg-gray-800 text-white p-8 mt-12">
+<footer class="bg-gray-800 text-white p-8">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <div class="flex flex-col md:flex-row gap-4 md:gap-8 text-center md:text-right">
             <a href="{% url 'home' %}" class="hover:text-blue-400 transition">خانه</a>
