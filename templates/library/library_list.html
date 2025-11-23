@@ -1,15 +1,22 @@
 {% load humanize %}
 {% load rial_to_toman %}
+
 {% if libraries %}
+<!-- کانتینر اصلی: نمایش کتابخانه‌ها به صورت عمودی و ریسپانسیو -->
+<!-- کلاس max-w-7xl mx-auto px-4 این کانتینر، محدوده اصلی محتوا در صفحه شماست -->
 <div class="flex flex-col gap-6 max-w-7xl mx-auto px-4">
 
     {% for library in libraries %}
+    <!-- لینک FontAwesome بهتر است در تگ <head> صفحه اصلی (base.html) قرار گیرد -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- کارت هر کتابخانه -->
+    <!-- کلاس p-6 به این کارت داده شده است -->
     <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition p-6 border border-gray-200">
         <!-- Header کتابخانه -->
         <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
                   <h2 class="text-xl font-bold text-blue-700 mb-2 flex items-center gap-2">
-                        <a href="{% url 'library_detail' library.id %}">
+                        <a href="{% url 'library_detail' library.id %}" class="flex items-center gap-2">
                             <span>کتابخانه {{ library.name }}</span>
                             <i class="fas fa-map-marker-alt text-gray-800"></i>
                             <span>{{ library.province.name }}</span>
@@ -23,43 +30,51 @@
         <!-- کتاب‌های مورد نیاز -->
         <h3 class="font-semibold text-gray-800 mb-3">کتاب‌های مورد نیاز:</h3>
 
-        <!-- کانتینر محدود برای اسکرول افقی -->
         {% if library.required_items.all %}
-        <div class="overflow-x-auto">
-            <div class="flex gap-4 justify-start w-max px-2">
+        <!--
+            اصلاحیه نهایی برای رفع مشکل بیرون‌زدگی اسکرول:
+            1. کلاس‌های p-6 والد را با -mx-6 خنثی می‌کنیم تا عرض 100% از فضای موجود را بگیرد.
+            2. با px-6 به محتوای داخلی حاشیه می‌دهیم.
+            3. overflow-x-auto فقط باعث اسکرول شدن محتوای داخلی می‌شود.
+        -->
+        <div class="-mx-6 px-6 overflow-x-auto pb-4">
+            <div class="flex gap-4 w-max">
+
                 {% for item in library.required_items.all %}
-                <div class="flex-shrink-0 w-[250px]  <!-- عرض ثابت -->
-                            bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition
-                            flex flex-col justify-between">
-                    <h4 class="text-lg font-bold text-gray-800 mb-2">
+                <!-- کارت آیتم مورد نیاز -->
+                <div class="flex-shrink-0 w-[250px] bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+
+                    <h4 class="text-lg font-bold text-gray-800 mb-2 truncate">
                         {{ item.book.name|default:"نام کتاب نامشخص" }}
                     </h4>
+
                     <p class="text-sm text-gray-600 mb-1">دسته: {{ item.book.category|default:"نامشخص" }}</p>
                     <p class="text-sm text-gray-600 mb-1">تعداد لازم: {{ item.number_of_required }}</p>
                     <p class="text-sm text-gray-600 mb-1">موجود: {{ item.given_number }}</p>
+
                     <p class="text-sm font-semibold mt-2 text-gray-800">
                         مبلغ: {{ item.amount|rial_to_toman }}
                     </p>
 
-                            <!-- 🔥 دکمه ارسال پیام تلگرام -->
+                    <form
+                        hx-post="{% url 'send_message' %}"
+                        hx-target="#toast-container"
+                        hx-swap="innerHTML"
+                        class="inline-block mt-3">
 
-                            <form
-                                hx-post="{% url 'send_message' %}"
-                                hx-target="#toast-container"
-                                hx-swap="innerHTML"
-                                class="inline-block">
+                        {% csrf_token %}
+                        <input type="hidden" name="book" value="{{ item.book.name }}">
+                        <input type="hidden" name="library" value="{{ library.name }}">
+                        <input type="hidden" name="number_of_required" value="{{ item.number_of_required }}">
 
-                                {% csrf_token %}
-                                <input type="hidden" name="book" value="{{ item.book.name }}">
-                                <input type="hidden" name="library" value="{{ library.name }}">
-                                <input type="hidden" name="number_of_required" value="{{ item.number_of_required }}">
+                        <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded w-full hover:bg-blue-700 transition">
+                            انتخاب برای تلگرام
+                        </button>
+                    </form>
 
-                                <button type="submit" class="px-2 py-1 bg-blue-600 text-white rounded">
-                                    انتخاب برای تلگرام
-                                </button>
-                            </form>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
         {% else %}
@@ -71,12 +86,12 @@
 
 </div>
 {% else %}
-<p class="text-center font-bold text-gray-700">هیچ کتاب یا کتابخانه‌ای یافت نشد</p>
+<p class="text-center font-bold text-gray-700 max-w-7xl mx-auto px-4">هیچ کتاب یا کتابخانه‌ای یافت نشد</p>
 {% endif %}
 
 <!-- Pagination -->
-{% if libraries.has_other_pages %}
-<div class="flex justify-center mt-6 gap-2 flex-wrap">
+<div class="flex justify-center mt-6 gap-2 flex-wrap max-w-7xl mx-auto px-4">
+    {% if libraries.has_other_pages %}
     {% if libraries.has_previous %}
     <a hx-get="/?page={{ libraries.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_provinces %}&provinces={{ selected_provinces|join:',' }}{% endif %}"
        hx-target="#librariesContainer"
@@ -96,18 +111,15 @@
         بعدی
     </a>
     {% endif %}
+    {% endif %}
 </div>
-{% endif %}
+
 {% block scripts %}
 <script>
-// برای HTMX: بعد از swap محتوا
 document.body.addEventListener('htmx:afterSwap', function(evt) {
-    // چک می‌کنیم که target ما toast-container باشد
     if(evt.detail.target.id === 'toast-container'){
-        // 2 ثانیه بعد toast را مخفی و فرم را reset
         setTimeout(() => {
             evt.detail.target.innerHTML = '';
-            // ریست تمام فرم‌هایی که hx-post دارند (تلگرام)
             const forms = document.querySelectorAll('form[hx-post]');
             forms.forEach(f => f.reset());
         }, 2000);
